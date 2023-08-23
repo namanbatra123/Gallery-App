@@ -12,10 +12,11 @@
     let newSlide = document.querySelector("#new-slide");
     let createSlide = document.querySelector("#create-slide");
     let showSlide = document.querySelector("#show-slide");
-    let btnSaveSlide = document.querySelector("btnSaveSlide");
-    let txtImgUrl = document.querySelector("txtImgUrl");
-    let txtTitle = document.querySelector("txtTitle");
-    let txtSlideDesc = document.querySelector("txtSlideDesc");
+    let slideList = document.querySelector("#slide-list");
+    let btnSaveSlide = document.querySelector("#btnSaveSlide");
+    let txtImgUrl = document.querySelector("#txtImgUrl");
+    let txtTitle = document.querySelector("#txtTitle");
+    let txtSlideDesc = document.querySelector("#txtSlideDesc");
     
     let albums = [{
         name: "test",
@@ -80,13 +81,30 @@
         overlay.style.display = "none";
         contentDetailsOverlay.style.display = "none";
         createSlide.style.display = "block";
-        
+        showSlide.style.display= "block";
     }
 
     function handleSaveSlide(){
         let url = txtImgUrl.value;
         let title = txtTitle.value;
         let desc = txtSlideDesc.value;
-        alert(url + " " + title + " " + desc);
+
+        let slideTemplate = allTemplates.content.querySelector(".slide");
+        let slide = document.importNode(slideTemplate, true);
+
+        slide.querySelector(".title").innerHTML = title;
+        slide.querySelector(".desc").innerHTML = desc;
+        slide.querySelector("img").setAttribute("src", url);
+        slide.addEventListener("click", handleSlideClick);
+
+        slideList.appendChild(slide);
+        slide.dispatchEvent(new Event("click"));
+    }
+
+    function handleSlideClick(){
+        overlay.style.display = "none";
+        contentDetailsOverlay.style.display = "none";
+        createSlide.style.display = "none";
+        showSlide.style.display= "block";
     }
 })();
